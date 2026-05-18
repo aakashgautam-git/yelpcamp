@@ -1,0 +1,96 @@
+<% layout('layouts/boilerplate') %>
+<style>
+    body {
+        background-color: #f7f9fa;
+    }
+    .form-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        background-color: #ffffff;
+    }
+    .form-control:focus {
+        border-color: #2d6a4f;
+        box-shadow: 0 0 0 0.25rem rgba(45, 106, 79, 0.25);
+    }
+    .btn-forest {
+        background-color: #2d6a4f;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+        width: 100%;
+    }
+    .btn-forest:hover {
+        background-color: #1b4332;
+        color: white;
+    }
+    .page-title {
+        font-weight: 800;
+        color: #2d6a4f;
+        letter-spacing: -0.5px;
+    }
+    .text-forest {
+        color: #2d6a4f;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .text-forest:hover {
+        color: #1b4332;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card form-card p-5">
+                <h1 class="text-center page-title mb-4">Add New Campground</h1>
+                
+                <form action="/campgrounds" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary" for="title">Title</label>
+                        <input class="form-control py-2" type="text" id="title" name="campground[title]" placeholder="e.g. Whispering Pines" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary" for="location">Location</label>
+                        <input class="form-control py-2" type="text" id="location" name="campground[location]" placeholder="e.g. Yosemite National Park, CA" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary" for="image">Upload Images</label>
+                        <input type="file" class="form-control" id="image" name="image" multiple>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary" for="price">Campground Price (per night)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control py-2" id="price" placeholder="0.00" aria-label="Amount" name="campground[price]" required min="0" step="0.01">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary" for="description">Description</label>
+                        <textarea class="form-control" id="description" name="campground[description]" rows="4" placeholder="Describe the gorgeous views, campsite amenities, and vibe..." required></textarea>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <button class="btn btn-forest py-2 fs-5">Add Campground</button>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-3">
+                    <a class="text-forest" href="/campgrounds">&larr; Back to Campgrounds</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

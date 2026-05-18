@@ -1,0 +1,103 @@
+<% layout('layouts/boilerplate') %>
+<style>
+    body {
+        background-color: #f7f9fa;
+    }
+    .campground-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #ffffff;
+    }
+    .campground-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    .card-img-container {
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        min-height: 220px;
+    }
+    .card-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .campground-card:hover .card-img-container img {
+        transform: scale(1.05);
+    }
+    .btn-forest {
+        background-color: #2d6a4f;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 20px;
+        font-weight: 600;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+    .btn-forest:hover {
+        background-color: #1b4332;
+        color: white;
+        transform: translateY(-1px);
+    }
+    .btn-forest:active {
+        transform: translateY(1px);
+    }
+    .text-forest {
+        color: #2d6a4f;
+    }
+    .page-title {
+        font-weight: 800;
+        color: #2d6a4f;
+        letter-spacing: -0.5px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1 class="page-title m-0">Explore Campgrounds</h1>
+        <a href="/campgrounds/new" class="btn btn-forest px-4 py-2">Add Campground</a>
+    </div>
+
+    <div class="row">
+        <% for (let campground of campgrounds) { %>
+            <div class="col-12 mb-4">
+                <div class="card campground-card">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <div class="card-img-container">
+                                <% if (campground.images && campground.images.length) { %>
+                                    <img alt="Campground image" src="<%= campground.images[0].url %>">
+                                <% } else { %>
+                                    <img alt="No image available" src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=80">
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <div class="card-body p-4 w-100">
+                                <h4 class="card-title fw-bold mb-3 text-dark">
+                                    <%= campground.title %>
+                                </h4>
+                                <p class="card-text text-secondary mb-3">
+                                    <%= campground.description %>
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <span class="text-muted fw-semibold">
+                                        <i class="bi bi-geo-alt"></i> <%= campground.location %>
+                                    </span>
+                                    <a class="btn btn-forest" href="/campgrounds/<%= campground._id %>">
+                                        View Campground
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
