@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Booking = require('../models/booking');
 module.exports.renderRegister = (req, res) => {
     res.render('users/register');
 }
@@ -40,4 +41,9 @@ module.exports.logout = (req, res, next) => {
         res.redirect('/campgrounds');
     });
 
+}
+
+module.exports.showBookings = async (req, res) => {
+    const bookings = await Booking.find({ user: req.user._id }).populate('campground').sort({ bookingDate: -1 });
+    res.render('users/bookings', { bookings });
 }

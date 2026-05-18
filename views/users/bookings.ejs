@@ -1,0 +1,162 @@
+<% layout('layouts/boilerplate') %>
+
+    <style>
+        body {
+            background-color: grey
+        }
+
+        .booking-card {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            border-radius: 1.25rem;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.1) !important;
+            z-index: 10;
+        }
+
+        .card-img-top {
+            height: 280px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .booking-card:hover .card-img-top {
+            transform: scale(1.08);
+        }
+
+        .img-wrapper {
+            overflow: hidden;
+            border-top-left-radius: 1.25rem;
+            border-top-right-radius: 1.25rem;
+        }
+
+        .gradient-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            font-size: 3.5rem;
+            letter-spacing: -1px;
+        }
+
+        .booking-number {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #333;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .price-box {
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            border: 1px solid #e9ecef;
+        }
+    </style>
+
+    <div class="container mb-5 pb-5">
+        <!-- Header Section -->
+        <div class="d-flex flex-column align-items-center text-center mt-4 mb-5 pb-3">
+            <h1 class="gradient-header mb-3">Your Adventures</h1>
+            <p class="text-muted fs-5 mb-4" style="max-width: 600px;">Relive your past bookings and prepare for your
+                next breathtaking journey into the wild.</p>
+
+            <% if (bookings.length> 0) { %>
+                <div class="badge rounded-pill"
+                    style="background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); font-size: 1.2rem; padding: 0.7rem 2rem; box-shadow: 0 8px 25px rgba(255, 8, 68, 0.3);">
+                    <i class="bi bi-ticket-detailed-fill me-2"></i>
+                    <%= bookings.length %> Total Booking<%= bookings.length> 1 ? 's' : '' %>
+                </div>
+                <% } %>
+        </div>
+
+        <% if (bookings.length===0) { %>
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <div class="card border-0 shadow-lg p-5" style="border-radius: 25px; background: white;">
+                        <i class="bi bi-compass text-muted mb-4" style="font-size: 5rem;"></i>
+                        <h2 class="mb-3 fw-bold">No Bookings Found</h2>
+                        <p class="text-muted fs-5 mb-4">It looks like you haven't started your adventure yet. The
+                            wilderness is calling!</p>
+                        <a href="/campgrounds"
+                            class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm">Explore
+                            Campgrounds</a>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+                <!-- Grid Layout -->
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+                    <% bookings.forEach((booking, i)=> { %>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm booking-card position-relative bg-white">
+
+                                <div class="booking-number">
+                                    #<%= i + 1 %>
+                                </div>
+
+                                <div class="img-wrapper">
+                                    <% if (booking.campground && booking.campground.images.length) { %>
+                                        <img src="<%= booking.campground.images[0].url %>" class="card-img-top"
+                                            alt="<%= booking.campground.title %>">
+                                        <% } else { %>
+                                            <img src="https://res.cloudinary.com/douqbebwk/image/upload/v1600103881/YelpCamp/lz8jjv2gyynjil7lswf4.png"
+                                                class="card-img-top" alt="Default image">
+                                            <% } %>
+                                </div>
+
+                                <div class="card-body d-flex flex-column p-4">
+                                    <h4 class="card-title fw-bold text-truncate mb-2">
+                                        <% if (booking.campground) { %>
+                                            <a href="/campgrounds/<%= booking.campground._id %>"
+                                                class="text-decoration-none text-dark stretched-link">
+                                                <%= booking.campground.title %>
+                                            </a>
+                                            <% } else { %>
+                                                <span class="text-muted">Campground Unavailable</span>
+                                                <% } %>
+                                    </h4>
+
+                                    <p class="card-text text-muted small mb-4 text-truncate">
+                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                                        <% if (booking.campground) { %>
+                                            <%= booking.campground.location %>
+                                                <% } else { %>
+                                                    Location Unknown
+                                                    <% } %>
+                                    </p>
+
+                                    <div class="mt-auto">
+                                        <div
+                                            class="price-box d-flex justify-content-between align-items-center mb-4 p-3 rounded-4">
+                                            <span class="text-muted fw-semibold">Total Paid</span>
+                                            <span class="fs-3 fw-bold text-dark">$<%= booking.price %></span>
+                                        </div>
+
+                                        <div
+                                            class="d-flex justify-content-between align-items-center text-muted small px-2">
+                                            <span class="fw-medium"><i class="bi bi-calendar-event me-2"></i>
+                                                <%= booking.bookingDate.toLocaleDateString('en-US', { month: 'long' ,
+                                                    day: 'numeric' , year: 'numeric' }) %>
+                                            </span>
+                                            <span class="text-capitalize text-success fw-bold"><i
+                                                    class="bi bi-check-circle-fill me-1"></i>
+                                                <%= booking.paymentStatus %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+                <% } %>
+    </div>

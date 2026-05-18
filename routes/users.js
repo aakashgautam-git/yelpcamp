@@ -13,4 +13,7 @@ router.route('/login')
     .post(storeReturnTo, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), users.login)
 
 router.get('/logout', users.logout)
+
+router.get('/my-bookings', require('../middleware').isLoggedIn, catchAsync(users.showBookings))
+
 module.exports = router;

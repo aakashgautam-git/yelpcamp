@@ -1,4 +1,5 @@
 const Campground = require('../models/campground');
+const Booking = require('../models/booking');
 const { cloudinary } = require('../cloudinary');
 const maptilerClient = require("@maptiler/client");
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
@@ -119,4 +120,36 @@ module.exports.deleteCampground = async (req, res) => {
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted a campground');
     res.redirect('/campgrounds');
+};
+
+module.exports.renderBookForm = async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    if (!campground) {
+        req.flash('error', 'Cannot find that campground');
+        return res.redirect('/campgrounds');
+    }
+    res.render('campgrounds/book', { campground });
+};
+
+module.exports.createBooking = async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    if (!campground) {
+        req.flash('error', 'Cannot find that campground');
+        return res.redirect('/campgrounds');
+    }
+
+    // Mock payment processing logic here
+    // We assume the payment is always successful for the mock integration
+    const booking = new Booking({
+        user: req.user._id,
+        campground: campground._id,
+        price: campground.price,
+        paymentStatus: 'paid', // Hardcoding as paid for mock
+        bookingDate: new Date()
+    });
+
+    await booking.save();
+    
+    req.flash('success', 'Successfully booked campground and processed payment!');
+    res.redirect('/my-bookings');
 };

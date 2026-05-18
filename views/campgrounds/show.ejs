@@ -52,16 +52,15 @@
                             <button class="btn btn-danger">
                                 Delete
                             </button>
-
                         </form>
-                        <button>
-                            BOOK NOW
-                        </button>
                     </div>
-                    <% } %>
-                        <div class="card-footer text-muted">
-                            2 days ago
-                        </div>
+                <% } %>
+                <div class="card-body text-center">
+                    <a href="/campgrounds/<%= campground._id %>/book" class="btn btn-success btn-lg w-100">Book Now</a>
+                </div>
+                <div class="card-footer text-muted">
+                    2 days ago
+                </div>
             </div>
 
         </div>

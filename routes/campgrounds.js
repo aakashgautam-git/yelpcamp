@@ -21,4 +21,8 @@ router.route('/:id')
 
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm))
 
+router.route('/:id/book')
+    .get(isLoggedIn, catchAsync(campgrounds.renderBookForm))
+    .post(isLoggedIn, catchAsync(campgrounds.createBooking));
+
 module.exports = router

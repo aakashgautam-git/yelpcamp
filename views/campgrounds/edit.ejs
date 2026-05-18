@@ -5,7 +5,7 @@
 
         <div class="col-6 offset-3">
             <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST" novalidate
-                class="validated-form" enctype="multipart/form-data">
+                class="validated-form" enctype="multipart/form-data" id="editCampgroundForm">
 
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <button class="btn btn-info">Update campground</button>
+                    <button id="submitBtn" class="btn btn-info">Update campground</button>
                 </div>
 
             </form>
@@ -64,3 +64,14 @@
             <a href="/campgrounds/<%= campground._id %>">Back to campground</a>
         </div>
     </div>
+    <script>
+        const form = document.getElementById('editCampgroundForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity()) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+            }
+        });
+    </script>
